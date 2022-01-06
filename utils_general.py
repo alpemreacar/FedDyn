@@ -276,7 +276,8 @@ def train_fedprox_mdl(model, avg_model_param_, mu, trn_x, trn_y, learning_rate, 
                 else:
                     local_par_list = torch.cat((local_par_list, param.reshape(-1)), 0)
             
-            loss_algo = -mu * torch.sum(local_par_list * avg_model_param_)
+            loss_algo = mu/2 * torch.sum(local_par_list * local_par_list)
+            loss_algo += -mu * torch.sum(local_par_list * avg_model_param_)
             loss = loss_f_i + loss_algo
 
             optimizer.zero_grad()
